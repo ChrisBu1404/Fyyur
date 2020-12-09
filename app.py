@@ -32,6 +32,12 @@ migrate = Migrate(app, db)
 # Models.
 #----------------------------------------------------------------------------#
 
+# Format for defining a model with SQLAlchemy CORE
+# Show = db.Table('Show',
+#   db.Column('venue_id', db.Integer, db.ForeignKey('Venue.id'), primary_key=True),
+#   db.Column('artist_id', db.Integer, db.ForeignKey('Artist.id'), primary_key=True)
+# )
+
 class Venue(db.Model):
     __tablename__ = 'Venue'
 
@@ -65,13 +71,22 @@ class Artist(db.Model):
 
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 
-class Show(db.Model):
-  __tablename__ = 'Show'
 
-  id = db.Column(db.Integer, primary_key=True)
-  artist_id = db.Column(db.Integer)
-  venue_id = db.Column(db.Integer)
-  start_time = db.Column(db.DateTime) #Vielleicht falsch
+
+class Show(db.Model):
+    __tablename__ = 'Show'
+    id = db.Column(db.Integer, primary_key=True)
+    start_time = db.Column(db.DateTime())
+    # Foreign Keys
+    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
+    # relationships
+    artist = db.relationship(Artist,
+        backref=db.backref('shows', cascade='all, delete')
+    )
+    venue = db.relationship(Venue,
+        backref=db.backref('shows', cascade='all, delete')
+    )
 
 
 #----------------------------------------------------------------------------#
