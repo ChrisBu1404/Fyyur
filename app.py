@@ -28,6 +28,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+if sys.prefix == sys.base_prefix:
+  print('Virtual environment enabled')
+
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
